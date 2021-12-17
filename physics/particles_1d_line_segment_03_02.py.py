@@ -18,6 +18,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import scipy.integrate as integrate
 from matplotlib.animation import FuncAnimation
+import time
+import os
 
 # Particle Settings
 PARTICLE_LEFT_POSITION = 0
@@ -29,9 +31,13 @@ PLOT_HEIGHT = 2
 PLOT_WIDTH = (PARTICLE_RIGHT_POSITION + 1) - (PARTICLE_LEFT_POSITION - 1)
 
 # Interaction force law
-IS_REPULSIVE = 1  # 1: Repulsive force | 0: Attractive force
+IS_REPULSIVE = True
 FORCE_DECAY_POWER = 1
 FORCE_POSITION_GAIN = 0.1
+
+direction = -1
+if IS_REPULSIVE:
+    direction = 1
 
 
 def update_graphics(frame):
@@ -40,27 +46,29 @@ def update_graphics(frame):
 
     Parameters
     ----------
-    frame : frame number (not used)
+    frame : frame number
     
     Returns
     -------
-    point_1, : A point handler
-    text_1 : A text handler
-
+    point_1, : A plot axis handler for ploting the particle
+    text_1 : A plot axis handler for printing the particle location
+    text_time_step : A plot axis handler for printing time steps
     """
     global particle_free_position
 
+    time_step = frame + 3 # FuncAnimation() is 3 steps ahread
+    
     dx = particle_free_position - PARTICLE_LEFT_POSITION
-    if(not dx == 0):
-        force_left_particle = np.sign(
-            dx)**IS_REPULSIVE/(np.abs(dx)**FORCE_DECAY_POWER)
+    if not dx == 0:
+        force_left_particle = direction * np.sign(
+            dx)/(np.abs(dx)**FORCE_DECAY_POWER)
     else:
         force_left_particle = 0  # In case of singularity, ignore the force.
 
     dx = particle_free_position - PARTICLE_RIGHT_POSITION
-    if(not dx == 0):
-        force_right_particle = np.sign(
-            dx)**IS_REPULSIVE/(np.abs(dx)**FORCE_DECAY_POWER)
+    if not dx == 0:
+        force_right_particle = direction * np.sign(
+            dx)/(np.abs(dx)**FORCE_DECAY_POWER)
     else:
         force_right_particle = 0  # In case of singularity, ignore the force.
 
@@ -70,8 +78,9 @@ def update_graphics(frame):
     point_1.set_data([particle_free_position, PLOT_HEIGHT/2])
     text_1.set_x(particle_free_position)
     text_1.set_text('{:.2f}'.format(particle_free_position))
+    text_time_step.set_text('Time step: {}'.format(time_step))
 
-    return point_1, text_1
+    return point_1, text_1, text_time_step
 
 
 # Plot the particles
@@ -87,9 +96,14 @@ point_1, = ax.plot(particle_free_position, PLOT_HEIGHT/2, 'o')
 text_1 = ax.text(particle_free_position, PLOT_HEIGHT/2+0.25,
                  '{:.2f}'.format(particle_free_position))
 
-ani = FuncAnimation(fig, update_graphics, interval=20,
-                    blit=True, repeat=True, frames=360)
+ax_info = fig.add_axes([0.12, 0.01, 0.78, 0.06])
+ax_info.axis("off")
+text_time_step = ax_info.text(0, 0.25, 'Time step: {}'.format(0))
 
-# ani.save('particle_n1.mp4', fps=20)
+ani = FuncAnimation(fig, update_graphics, interval=20,
+                    blit=True, repeat=False, frames=300)
+
+# ani.save('physics/animation_' + os.path.basename(__file__).split('.')
+#          [0] + '_' + str(int(time.time())) + '.mp4', fps=20)
 
 plt.show()
