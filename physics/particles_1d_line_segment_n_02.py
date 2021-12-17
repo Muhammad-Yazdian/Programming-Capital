@@ -1,12 +1,12 @@
 # -------------------------------------------------------------------
-# particles_1d_line_segment_04_02.py
+# particles_1d_line_segment_n_02.py
 #
 # Finds equilibrium state of distributed particles
 #
 # Particle System:
 #   - Dimensions                :   1D
 #   - Constraint type           :   Line Segment
-#   - Number of particles       :   4
+#   - Number of particles       :   n
 #   - Number of pixed particles :   2
 #
 # (C) 2021 Seied Muhammad Yazdian, Zurich, Switzerland
@@ -76,6 +76,9 @@ def update_graphics(frame):
     text_time_step : A plot axis handler for printing time steps
     particlet_1_text : A plot axis handler for printing particle 1 location
     particlet_2_text : A plot axis handler for printing particle 2 location
+    particlet_3_text : A plot axis handler for printing particle 3 location
+    particlet_4_text : A plot axis handler for printing particle 4 location
+    particlet_5_text : A plot axis handler for printing particle 5 location
     """
     global particles
 
@@ -102,13 +105,19 @@ def update_graphics(frame):
 
     particlet_1_text.set_x(poss[0])
     particlet_2_text.set_x(poss[1])
+    particlet_3_text.set_x(poss[2])
+    particlet_4_text.set_x(poss[3])
+    particlet_5_text.set_x(poss[4])
 
     particlet_1_text.set_text('{:.2f}'.format(poss[0]))
     particlet_2_text.set_text('{:.2f}'.format(poss[1]))
+    particlet_3_text.set_text('{:.2f}'.format(poss[2]))
+    particlet_4_text.set_text('{:.2f}'.format(poss[3]))
+    particlet_5_text.set_text('{:.2f}'.format(poss[4]))
 
     text_time_step.set_text('Time step: {}'.format(time_step))
 
-    return particles_marker, text_time_step, particlet_1_text, particlet_2_text
+    return particles_marker, text_time_step, particlet_1_text, particlet_2_text, particlet_3_text, particlet_4_text, particlet_5_text
 
 
 # ----------------
@@ -117,8 +126,11 @@ def update_graphics(frame):
 particle_L = Particle(PARTICLE_LEFT_POSITION, 'L', 'k')
 particle_R = Particle(PARTICLE_RIGHT_POSITION, 'R', 'k')
 particle_1 = Particle(1.00, '1', 'ro')
-particle_2 = Particle(2.00, '2', 'go')
-particles = [particle_1, particle_2]
+particle_2 = Particle(1.25, '2', 'go')
+particle_3 = Particle(1.50, '3', 'bo')
+particle_4 = Particle(1.75, '4', 'co')
+particle_5 = Particle(2.00, '5', 'yo')
+particles = [particle_1, particle_2, particle_3, particle_4, particle_5]
 
 # --------------
 # Plot particles
@@ -135,11 +147,22 @@ ax.plot([PARTICLE_LEFT_POSITION, PARTICLE_RIGHT_POSITION],
         [PLOT_HEIGHT/2, PLOT_HEIGHT/2], 'o-')
 
 particles_marker, = ax.plot([], [], 'o')  # 'r*'
+# ax.plot(particle_1.position, PLOT_HEIGHT/2, 'C1o')
+# ax.plot(particle_2.position, PLOT_HEIGHT/2, 'C1o')
+# ax.plot(particle_3.position, PLOT_HEIGHT/2, 'C1o')
+# ax.plot(particle_4.position, PLOT_HEIGHT/2, 'C1o')
+# ax.plot(particle_5.position, PLOT_HEIGHT/2, 'C1o')
 
 particlet_1_text = ax.text(
     particles[0].position, PLOT_HEIGHT/2+0.25, '{:.2f}'.format(particles[0].position))
 particlet_2_text = ax.text(
     particles[1].position, PLOT_HEIGHT/2+0.25, '{:.2f}'.format(particles[1].position))
+particlet_3_text = ax.text(
+    particles[2].position, PLOT_HEIGHT/2+0.25, '{:.2f}'.format(particles[2].position))
+particlet_4_text = ax.text(
+    particles[3].position, PLOT_HEIGHT/2+0.25, '{:.2f}'.format(particles[3].position))
+particlet_5_text = ax.text(
+    particles[4].position, PLOT_HEIGHT/2+0.25, '{:.2f}'.format(particles[4].position))
 
 # ----------------
 # Plot information
