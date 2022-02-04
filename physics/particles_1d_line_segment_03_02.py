@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt
 import scipy.integrate as integrate
 from matplotlib.animation import FuncAnimation
 import time
-import os
+import os 
 
 # Particle Settings
 PARTICLE_LEFT_POSITION = 0
