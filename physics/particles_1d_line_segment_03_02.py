@@ -107,3 +107,8 @@ ani = FuncAnimation(fig, update_graphics, interval=20,
 #          [0] + '_' + str(int(time.time())) + '.mp4', fps=20)
 
 plt.show()
+
+
+# content of test_sample.py
+def func2(x):
+    return x + 1
