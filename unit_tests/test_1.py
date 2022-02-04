@@ -2,7 +2,7 @@
 from physics.particles_1d_line_segment_03_02 import func2 as f
 
 # content of test_sample.py
-   def func(x):
+  def func(x):
        return x + 1
 
 
